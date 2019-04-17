@@ -1,14 +1,5 @@
 package main
 
-import (
-	"bufio"
-	"fmt"
-	"io"
-	"os"
-	"strconv"
-	"strings"
-)
-
 type XY struct {
 	X  int32
 	Y  int32
@@ -122,65 +113,4 @@ func minimumMoves(grid []string, startX int32, startY int32, goalX int32, goalY 
 	}
 
 	return result[goalX][goalY]
-}
-
-func main() {
-	reader := bufio.NewReaderSize(os.Stdin, 1024*1024)
-
-	stdout, err := os.Create(os.Getenv("OUTPUT_PATH"))
-	checkError(err)
-
-	defer stdout.Close()
-
-	writer := bufio.NewWriterSize(stdout, 1024*1024)
-
-	nTemp, err := strconv.ParseInt(readLine(reader), 10, 64)
-	checkError(err)
-	n := int32(nTemp)
-
-	var grid []string
-
-	for i := 0; i < int(n); i++ {
-		gridItem := readLine(reader)
-		grid = append(grid, gridItem)
-	}
-
-	startXStartY := strings.Split(readLine(reader), " ")
-
-	startXTemp, err := strconv.ParseInt(startXStartY[0], 10, 64)
-	checkError(err)
-	startX := int32(startXTemp)
-
-	startYTemp, err := strconv.ParseInt(startXStartY[1], 10, 64)
-	checkError(err)
-	startY := int32(startYTemp)
-
-	goalXTemp, err := strconv.ParseInt(startXStartY[2], 10, 64)
-	checkError(err)
-	goalX := int32(goalXTemp)
-
-	goalYTemp, err := strconv.ParseInt(startXStartY[3], 10, 64)
-	checkError(err)
-	goalY := int32(goalYTemp)
-
-	result := minimumMoves(grid, startX, startY, goalX, goalY)
-
-	fmt.Fprintf(writer, "%d\n", result)
-
-	writer.Flush()
-}
-
-func readLine(reader *bufio.Reader) string {
-	str, _, err := reader.ReadLine()
-	if err == io.EOF {
-		return ""
-	}
-
-	return strings.TrimRight(string(str), "\r\n")
-}
-
-func checkError(err error) {
-	if err != nil {
-		panic(err)
-	}
 }
